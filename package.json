@@ -1,0 +1,23 @@
+{
+  "name": "mockbe",
+  "version": "1.0.0",
+  "description": "Backend portion of the Capstone project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saarhaber/mockBE.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/saarhaber/mockBE/issues"
+  },
+  "homepage": "https://github.com/saarhaber/mockBE#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "sequelize": "^5.14.0"
+  }
+}
