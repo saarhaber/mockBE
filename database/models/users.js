@@ -35,8 +35,11 @@ const Users = db.define("Users", {
   },
   lastInterview: {
     type: Sequelize.DATE,
+  },
+  isInterviewer: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false
   }
-
 });
 
 module.exports = Users;
