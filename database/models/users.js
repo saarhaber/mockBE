@@ -10,6 +10,10 @@ const Users = db.define("Users", {
     type: Sequelize.STRING,
     allowNull: false
   },
+  imageUrl: {
+    type: Sequelize.STRING,
+    defaultValue: "http://i.imgur.com/AItCxSs.jpg"
+  },
   email: {
     type: Sequelize.STRING,
     allowNull: false
