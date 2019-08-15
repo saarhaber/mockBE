@@ -1,5 +1,5 @@
 const User = require('./users')
-const Interview = require('./dashboard')
+const Interview = require('./interviews')
 
 Interview.belongsTo(User, { as: "Interviewer", foreignKey: "interviewerId"});
 Interview.belongsTo(User, { as: "Student", foreignKey: "studentId"});
