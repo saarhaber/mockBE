@@ -11,9 +11,9 @@ db.sync({force: true}).then(async () => {
 
     app.use(bodyParser.json())
 
-    // app.get('/', (req, res) => {
-    //     res.send("THIS IS THE HOMEPAGE")
-    // })
+    app.get('/', (req, res) => {
+        res.send("THIS IS THE HOMEPAGE")
+    })
     
     app.use('/api', api_routes)
 
