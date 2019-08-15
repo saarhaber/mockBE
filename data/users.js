@@ -1,6 +1,5 @@
 const users = [
   {
-    id: 1,
     firstName: "Ajani",
     lastName: "Stewart",
     imageUrl: null,
@@ -13,7 +12,6 @@ const users = [
     isInterviewer: false
   },
   {
-    id: 2,
     firstName: "John",
     lastName: "Cline",
     imageUrl: 'http://3.bp.blogspot.com/-hrebbdHVnMs/T_xetr5DAHI/AAAAAAAAAzo/CODjoTjZh7Y/s1600/cat+10.jpg',
@@ -26,7 +24,6 @@ const users = [
     isInterviewer: true
   },
   {
-    id: 3,
     firstName: "Kim",
     lastName: "Wong",
     imageUrl: null,

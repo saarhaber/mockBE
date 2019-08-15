@@ -1,9 +1,9 @@
-const user_routes = require('express').Router()
-const users = require('../database/models/users')
+const User_routes = require('express').Router()
+const Users = require('../database/models/users')
 
-user_routes.get('/', (req, res) => {
-    users.findAll()
-    .then(res => console.log(res))
+User_routes.get('/', (req, res) => {
+    Users.findAll()
+    .then(data => res.send(data))
 })
 
-module.exports = user_routes
+module.exports = User_routes
