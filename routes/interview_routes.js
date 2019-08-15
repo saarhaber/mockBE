@@ -12,4 +12,15 @@ Interveiw_routes.get('/:id', async (req, res) => {
     .catch(err => console.log(err))
 })
 
+Interveiw_routes.post("/", async (req, res) => {
+    console.log(req.body)
+    await Interveiws.create({
+        dateCreated: req.body.dateCreated,
+        isBooked: false,
+        feedback: req.body.feedback,
+        extraInfo: req.body.extraInfo
+    })
+    res.send("HELLO")
+})
+
 module.exports = Interveiw_routes
