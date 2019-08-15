@@ -1,17 +1,17 @@
-const Users = require('./database/models/users')
-const Users_data = require('./data/users')
-const Interviews = require('./database/models/interviews')
-const Interviews_data = require('./data/interviews')
+const {Users, Interviews}  = require('../database/models')
+const Users_data = require('../data/users')
+// const Interviews = require('../database/models/interviews')
+const Interviews_data = require('../data/interviews')
 
-const populateUsers = users => {
+const populateUsers = async users => {
     for (let i = 0; i < users.length; i++) {
-        Users.create(users[i])
+        await Users.create(users[i])
     }
 }
 
-const populateInterviews = interviews => {
+const populateInterviews = async interviews => {
     for (let i = 0; i < interviews.length; i++) {
-        Interviews.create(interviews[i])
+        await Interviews.create(interviews[i])
     }
 }
 
@@ -26,5 +26,5 @@ const seedDatabase = async () => {
         console.log(err)
     }
 }
-
+seedDatabase()
 module.exports = seedDatabase
