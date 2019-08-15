@@ -1,10 +1,10 @@
-const User = require('./users')
-const Interview = require('./interviews')
+const Users = require('./users')
+const Interviews = require('./interviews')
 
-Interview.belongsTo(User, { as: "Interviewer", foreignKey: "interviewerId"});
-Interview.belongsTo(User, { as: "Student", foreignKey: "studentId"});
+Interviews.belongsTo(Users, { as: "Interviewer", foreignKey: "interviewerId"});
+Interviews.belongsTo(Users, { as: "Student", foreignKey: "studentId"});
 
-User.hasMany(Interview, { as: "Interviewer", foreignKey: "interviewerId"});
-User.hasMany(Interview, { as: "Student", foreignKey: "studentId"});
+Users.hasMany(Interviews, { as: "Interviewer", foreignKey: "interviewerId"});
+Users.hasMany(Interviews, { as: "Student", foreignKey: "studentId"});
 
-module.exports = {User, Interview}
+module.exports = {Users, Interviews}
