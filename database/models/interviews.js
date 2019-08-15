@@ -10,10 +10,10 @@ const Interviews = db.define("Interviews", {
   //   type: Sequelize.INTEGER,
   //   allowNull: false
   // },
-  date: {
+  dateCreated: {
     type: Sequelize.DATE
   },
-  booked: {
+  isBooked: {
     type: Sequelize.BOOLEAN,
     allowNull: false
   },
@@ -21,7 +21,7 @@ const Interviews = db.define("Interviews", {
     type: Sequelize.TEXT
   },
   extraInfo: {
-    type: Sequelize.TEXT,
+    type: Sequelize.TEXT
   }
 });
 
