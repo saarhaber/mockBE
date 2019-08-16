@@ -12,6 +12,9 @@ const Interviews = db.define("Interviews", {
   feedback: {
     type: Sequelize.TEXT
   },
+  interviewLocation: {
+    type: Sequelize.TEXT
+  },
   extraInfo: {
     type: Sequelize.TEXT
   },

@@ -2,7 +2,7 @@ const Users = [
   {
     firstName: "Ajani",
     lastName: "Stewart",
-    imageUrl: null,
+    password: "cats1",
     email: "email@email.com",
     organization: "Hunter College",
     description: "Student Web Developer paitentily waiting for the heat death of the universe",
@@ -14,6 +14,7 @@ const Users = [
   {
     firstName: "John",
     lastName: "Cline",
+    password: "cats2",
     imageUrl: 'http://3.bp.blogspot.com/-hrebbdHVnMs/T_xetr5DAHI/AAAAAAAAAzo/CODjoTjZh7Y/s1600/cat+10.jpg',
     email: "john@cline.com",
     organization: "Google",
@@ -26,7 +27,7 @@ const Users = [
   {
     firstName: "Kim",
     lastName: "Wong",
-    imageUrl: null,
+    password: "cats3",
     email: "kim.wong@email.com",
     organization: "Bloomberg",
     description: "Bigger Brain",
