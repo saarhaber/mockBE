@@ -1,11 +1,13 @@
 const User_routes = require('express').Router()
 // const Users = require('../database/models/users');
 const { Interviews, Users } = require('../database/models');
+const bcrypt = require('bcrypt')
 
 // all users
 User_routes.get('/', (req, res,next) => {
     Users.findAll()
-    .then(data => res.send(data)).catch(err => next(err))
+    .then(data => res.send(data))
+    .catch(err => next(err))
 })
 
 //get all interviewers
@@ -110,7 +112,15 @@ User_routes.put('/:id', async (req, res, next) => {
 
 User_routes.post('/', async (req,res,next) => {
   try {
-    const new_user = await Users.create(req.body);
+    const modded_req = await bcrypt.hash(req.body.password, 10)
+    .then(hash => {
+      let dummy = req.body
+      dummy.password = hash
+      console.log(dummy)
+      return dummy
+    })
+
+    const new_user = await Users.create(modded_req);
     if (new_user) {
       res.status(201).send(new_user);
     } else {
