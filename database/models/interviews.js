@@ -2,14 +2,6 @@ const Sequelize = require('sequelize');
 const db = require('../db');
 
 const Interviews = db.define("Interviews", {
-  // interviewerId: {
-  //   type: Sequelize.INTEGER,
-  //   allowNull: false
-  // },
-  // studentId: {
-  //   type: Sequelize.INTEGER,
-  //   allowNull: false
-  // },
   dateCreated: {
     type: Sequelize.DATE
   },
@@ -22,6 +14,12 @@ const Interviews = db.define("Interviews", {
   },
   extraInfo: {
     type: Sequelize.TEXT
+  },
+  interviewDate: {
+    type: Sequelize.DATEONLY
+  },
+  interviewTime: {
+    type: Sequelize.TIME
   }
 });
 

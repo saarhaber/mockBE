@@ -1,5 +1,6 @@
 const User_routes = require('express').Router()
-const Users = require('../database/models/users')
+// const Users = require('../database/models/users');
+const { Interviews, Users } = require('../database/models');
 
 // all users
 User_routes.get('/', (req, res,next) => {
@@ -37,7 +38,6 @@ User_routes.get('/students', async (req, res, next) => {
 
 //get one user by id
 User_routes.get('/:id', async (req,res,next) => {
-  console.log("ID")
   try {
     const user = await Users.findOne({
       where: {
@@ -48,6 +48,41 @@ User_routes.get('/:id', async (req,res,next) => {
       res.status(200).json(user);
     } else {
       res.status(404).send("user not found");
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
+//get all interviews by a user
+User_routes.get('/:id/interviews', async (req,res,next) => {
+  try {
+    const user = await Users.findOne({
+      where: {
+        id: req.params.id
+      }
+    });
+    if (!user) {
+      res.status(404).send()
+    }
+    let interviews;
+    if (user.isInterviewer) {
+      interviews = await Interviews.findAll({
+        where: {
+          interviewerId: req.params.id
+        }
+      });
+    } else {
+      interviews = await Interviews.findAll({
+        where: {
+          studentId: req.params.id
+        }
+      });
+    }
+    if (interviews) {
+      res.status(200).send(interviews);
+    } else {
+      res.status(404).send();
     }
   } catch (err) {
     next(err);

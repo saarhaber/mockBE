@@ -1,6 +1,5 @@
-const {Users, Interviews}  = require('../database/models')
+const { Users, Interviews }  = require('../database/models')
 const Users_data = require('../data/users')
-// const Interviews = require('../database/models/interviews')
 const Interviews_data = require('../data/interviews')
 
 const populateUsers = async users => {
@@ -11,7 +10,9 @@ const populateUsers = async users => {
 
 const populateInterviews = async interviews => {
     for (let i = 0; i < interviews.length; i++) {
-        await Interviews.create(interviews[i])
+        const int = await Interviews.create(interviews[i]);
+        await int.setStudent(1);
+        await int.setInterviewer(2);
     }
 }
 
