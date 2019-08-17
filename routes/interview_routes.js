@@ -56,7 +56,7 @@ Interview_routes.post("/", async (req, res) => {
     console.log(req.body)
     const new_interview = await Interviews.create({
         dateCreated: req.body.dateCreated,
-        isBooked: req.body.isBooked,
+        isBooked: false,
         feedback: req.body.feedback,
         extraInfo: req.body.extraInfo
     });
@@ -72,7 +72,7 @@ Interview_routes.put("/:id", async (req, res) => {
         if (campus != null) {
             await Interviews.update({
                 dateCreated: req.body.dateCreated,
-                isBooked: false,
+                isBooked: req.body.isBooked,
                 feedback: req.body.feedback,
                 extraInfo: req.body.extraInfo
             },
