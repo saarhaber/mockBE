@@ -41,7 +41,6 @@ Interview_routes.get("/unbooked", async (req,res,next) => {
 });
 
 //get all interviews by user
-
 Interview_routes.get('/:id', async (req, res) => {
     await Interviews.findByPk(req.params.id)
     .then(interview => res.send(interview))
@@ -49,8 +48,6 @@ Interview_routes.get('/:id', async (req, res) => {
 })
 
 //get all booked interviews
-
-
 Interview_routes.post("/", async (req, res) => {
   try {
     console.log(req.body)
@@ -90,6 +87,23 @@ Interview_routes.put("/:id", async (req, res) => {
             res.send("NO INTERVIEW OF THAT ID")
         }
     })
+})
+
+Interview_routes.delete('/:id', async (req, res, next) => {
+  try {
+    let numDeleted = await Interviews.destroy({
+      where: {
+        id: req.params.id
+      }
+    });
+    if (!numDeleted) {
+      res.status(404).send(`Interview does not exist`);
+    } else {
+      res.status(204).send();
+    }
+  } catch (err) {
+    next(err);
+  }
 })
 
 module.exports = Interview_routes
