@@ -110,8 +110,53 @@ User_routes.put('/:id', async (req, res, next) => {
   }
 });
 
+User_routes.put("/", async (req, res, next) => {
+  const identification = req.body
+  // Search DB for user by email
+  await Users.findOne({
+    where: {
+      email: identification.email
+    }
+  }) // error check for if user exists
+  .then(user => {
+    if (user) {
+      return user
+    }
+    else {
+      return {
+        email_found: false,
+        password_match: false,
+        message: "ERROR: Could not find user"
+      }
+    }
+  }) // error check for if password matched
+  .then(async (user) => {
+    if (user.email_found == false) {
+      return user
+    }
+    else {
+      const match = await bcrypt.compare(identification.password, user.password)
+      if (match) {
+        return user
+      }
+      else {
+        return {
+          email_found: true,
+          password_match: false,
+          message: "ERROR: Password does not match"
+        }
+      }
+    }
+  }) // send whatever was passed down (correct object will get passed down, i.e. error-object if not found or password mismatch, user-object if found and password match)
+  .then(user => {
+    res.send(user)
+  })
+  .catch(err => console.log(err))
+})
+
 User_routes.post('/', async (req,res,next) => {
   try {
+    // hash and encrypt password
     const modded_req = await bcrypt.hash(req.body.password, 10)
     .then(hash => {
       let dummy = req.body
@@ -120,6 +165,7 @@ User_routes.post('/', async (req,res,next) => {
       return dummy
     })
 
+    // actually create new user in table
     const new_user = await Users.create(modded_req);
     if (new_user) {
       res.status(201).send(new_user);
