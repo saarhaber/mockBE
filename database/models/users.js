@@ -1,5 +1,7 @@
 const Sequelize = require('sequelize');
+const bcrypt = require('bcrypt');
 const db = require('../db');
+const saltRounds = 10;
 
 const Users = db.define("Users", {
   firstName: {
@@ -10,10 +12,18 @@ const Users = db.define("Users", {
     type: Sequelize.STRING,
     allowNull: false
   },
-  // TEMP REMOVE IN PRODUCTION
   password: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
+    get() {
+      return () => this.getDataValue("password");
+    }
+  },
+  salt : {
+    type: Sequelize.STRING,
+    get() {
+      return () => this.getDataValue("salt");
+    }
   },
   imageUrl: {
     type: Sequelize.STRING,
@@ -21,7 +31,8 @@ const Users = db.define("Users", {
   },
   email: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
+    unique: true
   },
   organization: {
     type: Sequelize.STRING,
@@ -46,5 +57,43 @@ const Users = db.define("Users", {
     allowNull: false
   }
 });
+
+Users.generateSalt = async () => {
+  try { 
+    return await bcrypt.genSalt(saltRounds);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+Users.encryptPassword = async (plaintext, salt) => {
+  try {
+    return await bcrypt.hash(plaintext, salt);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+Users.prototype.correctPassword = async function(password) {
+  try {
+    return await bcrypt.compare(password, this.password());
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+const setSaltandPassword = async user => {
+  try {
+    if (user.changed("password")) {
+    user.salt = await Users.generateSalt();
+    user.password = await Users.encryptPassword(user.password(), user.salt())
+   }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+Users.beforeCreate(setSaltandPassword);
+Users.beforeUpdate(setSaltandPassword);
 
 module.exports = Users;

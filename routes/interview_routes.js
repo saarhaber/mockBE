@@ -6,6 +6,7 @@ Interview_routes.get('/', (req, res) => {
     .then(data => res.send(data))
 })
 
+//get all booked interviews
 Interview_routes.get("/booked", async (req, res, next) => {
   try {
     const booked = await Interviews.findAll({
@@ -47,7 +48,6 @@ Interview_routes.get('/:id', async (req, res) => {
     .catch(err => console.log(err))
 })
 
-//get all booked interviews
 Interview_routes.post("/", async (req, res) => {
   try {
     console.log(req.body)
