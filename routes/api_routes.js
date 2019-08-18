@@ -7,8 +7,8 @@ api_routes.get('/', (req, res) => {
   res.send("API HOMEPAGE")
 })
 
+api_routes.use('/auth', auth_routes)
 api_routes.use('/users', user_routes)
 api_routes.use('/interviews', interview_routes)
-api_routes.use('/auth', auth_routes)
 
 module.exports = api_routes

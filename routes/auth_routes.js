@@ -37,7 +37,11 @@ router.post('/logout', (req,res) => {
 });
 
 router.get('/me', (req,res) => {
-  res.json(req.user);
+  if (req.user) {
+    res.json(req.user);
+  } else {
+    res.status(401).send("Not logged in");
+  }
 });
 
 module.exports = router;
