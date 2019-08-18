@@ -18,7 +18,7 @@ const Users = [
     password: 'cats2',
     //salt: "$2b$10$B3vX0L7R3vQzBAEa.Nmtm.",
     imageUrl: 'http://3.bp.blogspot.com/-hrebbdHVnMs/T_xetr5DAHI/AAAAAAAAAzo/CODjoTjZh7Y/s1600/cat+10.jpg',
-    email: "john@cline.com",
+    email: "mockupdispatch@gmail.com",
     organization: "Google",
     description: "Big Brain",
     profession: "web developer",

@@ -12,7 +12,6 @@ const populateUsers = async users => {
 const populateInterviews = async interviews => {
     for (let i = 0; i < interviews.length; i++) {
         const int = await Interviews.create(interviews[i]);
-        await int.setStudent(1);
         await int.setInterviewer(2);
     }
 }
