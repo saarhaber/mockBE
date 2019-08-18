@@ -5,6 +5,7 @@ const Interviews_data = require('../data/interviews')
 const populateUsers = async users => {
     for (let i = 0; i < users.length; i++) {
         await Users.create(users[i])
+        console.log(users[i]);
     }
 }
 
@@ -26,5 +27,5 @@ const seedDatabase = async () => {
         console.log(err)
     }
 }
-seedDatabase()
+// seedDatabase()
 module.exports = seedDatabase

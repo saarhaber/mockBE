@@ -1,5 +1,4 @@
 const User_routes = require('express').Router()
-// const Users = require('../database/models/users');
 const { Interviews, Users } = require('../database/models');
 const bcrypt = require('bcrypt')
 
@@ -92,22 +91,26 @@ User_routes.get('/:id/interviews', async (req,res,next) => {
 });
 
 User_routes.put('/:id', async (req, res, next) => {
-  try { 
-    const update = req.body;
-    console.log("req.body", req.body);
-    const modified = await Users.update(update, {
-      where: {
-        id : req.params.id
+  if (req.isAuthenticated()) {
+    try { 
+      const update = req.body;
+      const modified = await Users.update(update, {
+        where: {
+          id : req.params.id
+        }
+      });
+      if (modified[0]) {
+        res.status(200).send(modified);
+      } else {
+        res.status(404).send("User not found");
       }
-    });
-    if (modified) {
-      res.status(200).send(modified);
-    } else {
-      res.status(400).send("something bad happened");
+    } catch (err) {
+      next(err);
     }
-  } catch (err) {
-    next(err);
+  } else {
+    res.status(401).send("User is not logged in")
   }
+  
 });
 
 User_routes.put("/", async (req, res, next) => {
