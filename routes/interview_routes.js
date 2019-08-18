@@ -1,5 +1,5 @@
 const Interview_routes = require('express').Router()
-const {Interviews} = require('../database/models')
+const {Interviews, Users} = require('../database/models')
 
 Interview_routes.get('/', (req, res) => {
     Interviews.findAll()
@@ -63,7 +63,41 @@ Interview_routes.post("/", async (req, res) => {
   }
 });
 
+// version with email
 Interview_routes.put("/:id", async (req, res) => {
+  const interview = await Interviews.findByPk(req.params.id)
+  if (interview) {
+    if (true) {
+      // change interview details
+      // (interview.isBooked == false) && (req.body.isBooked == true)
+      await interview.update({
+        dateCreated: req.body.dateCreated,
+        isBooked: req.body.isBooked,
+        feedback: req.body.feedback,
+        interviewLocation: req.body.interviewLocation,
+        extraInfo: req.body.extraInfo,
+        interviewDate: req.body.interviewDate,
+        interviewTime: req.body.interviewTime
+      })
+      .then(() => interview.setStudent(req.body.studentId))
+      // find interviewer and send email
+      .then(async () => {
+        const interviewer = await Users.findByPk(interview.interviewerId)
+        res.send({interview, interviewer})
+      })
+      // find student and send email
+    }
+    // res.send(interview)
+  }
+  else {
+    res.send({
+      found: false,
+      message: "ERROR: Could not find interview in database"
+    })
+  }
+})
+
+/* Interview_routes.put("/:id", async (req, res) => {
     await Interviews.findByPk(req.params.id)
     .then(async campus => {
         if (campus != null) {
@@ -88,6 +122,7 @@ Interview_routes.put("/:id", async (req, res) => {
         }
     })
 })
+*/
 
 Interview_routes.delete('/:id', async (req, res, next) => {
   try {
