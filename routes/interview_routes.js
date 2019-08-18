@@ -1,5 +1,6 @@
 const Interview_routes = require('express').Router()
-const {Interviews} = require('../database/models')
+const {Interviews, Users} = require('../database/models')
+const nodemailer = require('nodemailer')
 
 Interview_routes.get('/', (req, res) => {
     Interviews.findAll()
@@ -63,30 +64,100 @@ Interview_routes.post("/", async (req, res) => {
   }
 });
 
+// This function can be used to send emails
+sendEmail = async (to, subject, message) => {
+  console.log("Running initialNotification")
+  let testAccount = await nodemailer.createTestAccount();
+
+  var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+           user: 'mockupdispatch@gmail.com',
+           pass: 'Mockupdispatch96'
+       }
+  });
+
+  const mailOptions = {
+    from: 'mockupdispatch@gmail.com', // sender address
+    to: to, // list of receivers
+    subject: subject, // Subject line
+    html: `<p>${message}</p>`// plain text body
+  };
+
+  transporter.sendMail(mailOptions, function (err, info) {
+    if(err)
+      console.log(err)
+    else
+      console.log(info);
+  });
+}
+
+// version with email
 Interview_routes.put("/:id", async (req, res) => {
-    await Interviews.findByPk(req.params.id)
-    .then(async campus => {
-        if (campus != null) {
-            await Interviews.update({
-                dateCreated: req.body.dateCreated,
-                isBooked: req.body.isBooked,
-                feedback: req.body.feedback,
-                extraInfo: req.body.extraInfo
-            },
-            {
-                where: {
-                    id: req.params.id
-                }
-            })
-            
-            console.log(`Entry ${req.params.id} has been updated`)
-            await Interviews.findAll()
-            .then(data => res.status(200).json())
-        }
-        else {
-            res.send("NO INTERVIEW OF THAT ID")
-        }
+  const interview = await Interviews.findByPk(req.params.id)
+  if (interview) {
+    // this conditional needs to be changed so it only activates when an interview is booked. this can be checked by the following statement: (interview.isBooked == false) && (req.body.isBooked == true)
+    if (true) {
+      await interview.update({
+        dateCreated: req.body.dateCreated,
+        isBooked: req.body.isBooked,
+        feedback: req.body.feedback,
+        interviewLocation: req.body.interviewLocation,
+        extraInfo: req.body.extraInfo,
+        interviewDate: req.body.interviewDate,
+        interviewTime: req.body.interviewTime
+      })
+      // interview student id must be changed like so. This is because it is a foreign key
+      .then(() => interview.setStudent(req.body.studentId))
+      // find interviewer and send email
+      .then(async () => {
+        const interviewer = await Users.findByPk(interview.interviewerId)
+        
+        const message = 
+        `Hi ${interviewer.firstName}<br><br>
+        You have an interview with a student. Here is the interview description:<br><br>
+        ${interview.extraInfo}<br><br>
+        Thanks so much for volunteering!<br>
+        Sincerely,<br>
+        The MockUp Team<br>`
+
+        sendEmail(interviewer.email, "MOCKUP: Interview", message)
+
+        return interviewer
+      })
+      // find student and send email
+      .then(async interviewer => {
+        const student = await Users.findByPk(interview.studentId)
+        
+        const message = 
+        `Hi ${student.firstName}<br><br>
+        You have an interview with ${interviewer.firstName} ${interviewer.lastName}. Here is the interview description:<br><br>
+        ${interview.extraInfo}<br><br>
+        Good luck, you're gonna do great!<br>
+        Sincerely,<br>
+        The MockUp Team<br>`
+
+        sendEmail(interviewer.email, "MOCKUP: Interview", message)
+
+        res.send({
+          interview,
+          interviewer,
+          student
+        })
+      })
+      .catch(err => {
+        console.log(err)
+        res.send(err)
+      })
+    }
+    // res.send(interview)
+  }
+  else {
+    res.send({
+      found: false,
+      message: "ERROR: Could not find interview in database"
     })
+  }
 })
 
 Interview_routes.delete('/:id', async (req, res, next) => {
