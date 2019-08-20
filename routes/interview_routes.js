@@ -111,6 +111,7 @@ Interview_routes.put("/:id", async (req, res) => {
       .then(() => interview.setStudent(req.body.studentId))
       // find interviewer and send email
       .then(async () => {
+        console.log("Inside interviewer email function")
         const interviewer = await Users.findByPk(interview.interviewerId)
         
         const message = 
@@ -127,6 +128,7 @@ Interview_routes.put("/:id", async (req, res) => {
       })
       // find student and send email
       .then(async interviewer => {
+        console.log("Inside student email function")
         const student = await Users.findByPk(interview.studentId)
         
         const message = 
@@ -137,7 +139,7 @@ Interview_routes.put("/:id", async (req, res) => {
         Sincerely,<br>
         The MockUp Team<br>`
 
-        sendEmail(interviewer.email, "MOCKUP: Interview", message)
+        sendEmail(student.email, "MOCKUP: Interview", message)
 
         res.send({
           interview,
