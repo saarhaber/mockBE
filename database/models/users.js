@@ -35,8 +35,7 @@ const Users = db.define("Users", {
     unique: true
   },
   organization: {
-    type: Sequelize.STRING,
-    allowNull: false
+    type: Sequelize.STRING
   },
   description: {
     type: Sequelize.TEXT
@@ -46,7 +45,6 @@ const Users = db.define("Users", {
   },
   interviewAmount: {
     type: Sequelize.INTEGER,
-    allowNull: false,
     defaultValue: 0
   },
   lastInterview: {
@@ -55,6 +53,9 @@ const Users = db.define("Users", {
   isInterviewer: {
     type: Sequelize.BOOLEAN,
     allowNull: false
+  },
+  googleId: {
+    type: Sequelize.STRING
   }
 });
 

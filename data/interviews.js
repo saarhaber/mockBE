@@ -1,7 +1,7 @@
 const Interviews = [
   {
     dateCreated: (new Date()).toISOString(),
-    isBooked: true,
+    isBooked: false,
     feedBack: "N/A",
     extraInfo: "ONE: Wanna get mock interviewed?",
   },
@@ -13,7 +13,7 @@ const Interviews = [
   },
   {
     dateCreated: (new Date()).toISOString(),
-    isBooked: true,
+    isBooked: false,
     feedBack: "N/A",
     extraInfo: "THREE: Wanna get mock interviewed?",
   }

@@ -37,42 +37,58 @@ passport.use(new LocalStrategy(
   }
 ));
 
-passport.serializeUser((user,done) => {
-  return done(null,user.id);
-});
-
-passport.deserializeUser(async (id,done) => {
-  try {
-    const user = await db.models.Users.findByPk(id);
-    done(null,user);
-  } catch (err) {
-    done(err);
-  }
-});
 
 db.sync({force: true}).then(() => {
-    seedDatabase()
-
+  // seedDatabase()
+  
+    app.use(cors({origin:true,credentials: true}));
+    app.use(function (req, res, next) {
+      res.header('Access-Control-Allow-Credentials', true);
+      res.header('Access-Control-Allow-Origin', req.headers.origin);
+      res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+      res.header('Access-Control-Allow-Headers', 'Origin, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, X-Response-Time, X-PINGOTHER, X-CSRF-Token,Authorization');
+      if (req.method === "OPTIONS") {
+          return res.status(200).end();
+      } else {
+          next();
+      }
+  });
     app.use(bodyParser.json())
     app.use(bodyParser.urlencoded({extended: true}))
     app.use(morgan('dev'))
-    app.use(cors())
 
     app.use(
       session({
         secret: process.env.SECRET || "SUPER SECRET",
         resave: false,
         saveUninitialized: false,
-        store: sessionStore
+        store: sessionStore,
+        // cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } //30 days
       })
     )
 
     app.use(passport.initialize())
     app.use(passport.session())
 
-    app.get('/', (req, res) => {
-        res.send("THIS IS THE HOMEPAGE")
-    })
+    passport.serializeUser((user,done) => {
+      console.log("in serialize", user.id)
+      return done(null,user.id);
+    });
+    
+    passport.deserializeUser(async (id,done) => {
+      console.log("in deserialize", id)
+      try {
+        const user = await db.models.Users.findByPk(id);
+        done(null,user);
+      } catch (err) {
+        done(err);
+      }
+    });
+    
+
+    // app.get('/', (req, res) => {
+    //     res.send("THIS IS THE HOMEPAGE")
+    // })
     
     app.use('/api', api_routes)
 
