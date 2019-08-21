@@ -69,6 +69,17 @@ Interview_routes.post("/", async (req, res) => {
   }
 });
 
+Interview_routes.put('/unbook/:id', async (req,res,next) => {
+  try {
+    const interview = await Interviews.findByPk(req.params.id);
+    await interview.update({isBooked: false});
+    await interview.setStudent(null);
+    res.status(200).send(interview);
+  } catch (err) {
+    next (err);
+  }
+})
+
 // This function can be used to send emails
 sendEmail = async (to, subject, message) => {
   console.log("Running initialNotification")
