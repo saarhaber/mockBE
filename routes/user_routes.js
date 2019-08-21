@@ -2,6 +2,38 @@ const User_routes = require('express').Router()
 const { Interviews, Users } = require('../database/models');
 const bcrypt = require('bcrypt')
 
+let loggedIn_id = undefined;
+
+//get logged in user
+User_routes.get('/me', async (req, res, next) => {
+  if (!loggedIn_id) {
+    res.status(401).send("Not logged in");
+  }
+  try {
+    const user = await Users.findOne({
+      where: {
+        id : loggedIn_id
+      }
+    });
+    if (user) {
+      res.status(200).json(user);
+    } else {
+      res.status(404).send("User no longer exists");
+    }
+  } catch (err) {
+    next(err);
+  }
+})
+
+// logout user
+User_routes.delete('/me', async (req, res, next) => {
+  if (!loggedIn_id) {
+    res.status(401).send("Not logged in");
+  }
+  loggedIn_id = undefined;
+  res.status(200).send("Logged out");
+})
+
 // all users
 User_routes.get('/', (req, res,next) => {
     Users.findAll()
@@ -182,6 +214,7 @@ User_routes.put("/", async (req, res, next) => {
     }
   }) // send whatever was passed down (correct object will get passed down, i.e. error-object if not found or password mismatch, user-object if found and password match)
   .then(user => {
+    loggedIn_id = user.id;
     res.send(user)
   })
   .catch(err => console.log(err))
