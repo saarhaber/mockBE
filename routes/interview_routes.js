@@ -72,7 +72,7 @@ Interview_routes.post("/", async (req, res) => {
 // This function can be used to send emails
 sendEmail = async (to, subject, message) => {
   console.log("Running initialNotification")
-  let testAccount = await nodemailer.createTestAccount();
+  // let testAccount = await nodemailer.createTestAccount();
 
   var transporter = nodemailer.createTransport({
     service: 'gmail',

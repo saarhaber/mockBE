@@ -43,7 +43,6 @@ User_routes.get('/', (req, res,next) => {
 
 //get all interviewers
 User_routes.get('/interviewers', async (req, res, next) => {
-  console.log("HERE")
   try {
     const interviewers = await Users.findAll({
       where: {
@@ -119,6 +118,37 @@ User_routes.get('/:id/interviews', async (req,res,next) => {
     }
   } catch (err) {
     next(err);
+  }
+});
+
+//endpoint to book an interview
+User_routes.put('/book/:studentId/:interviewId', async (req, res, next) => {
+  if (req.isAuthenticated()) {
+    try {
+      const interview = await Interviews.findByPk(req.params.interviewId);
+      if (Object.entries(interview).length === 0 && interview.constructor === Object) {
+        return res.status(404).send("Interview not found");
+      } else if (interview.studentId) {
+        return res.status(400).send("Interview already booked");
+      }
+      const user = await Users.findByPk(req.params.studentId);
+      // test if it is empty
+      if (Object.entries(user).length === 0 && user.constructor === Object) {
+        return res.status(404).send("User not found");
+      }
+      req.body.isBooked = true;
+      await Interviews.update(req.body,{
+        where: {
+          id: req.params.interviewId
+        }
+      });
+      interview.setStudent(req.params.studentId);
+      res.status(200).send(interview);
+    } catch (err) {
+      next(err);
+    }
+  } else {
+    res.status(401).send("Not logged in");
   }
 });
 
@@ -214,20 +244,25 @@ User_routes.post('/', async (req,res,next) => {
 });
 
 User_routes.delete('/:id', async (req,res,next) => {
-  try {
-    let numDeleted = await Users.destroy({
-      where: {
-        id : req.params.id
+  if (req.isAuthenticated() && req.user.id === req.params.id) {
+    try {
+      let numDeleted = await Users.destroy({
+        where: {
+          id : req.params.id
+        }
+      });
+      if (!numDeleted) {
+        res.status(404).send(`Does not exist`);
+      } else {
+        res.status(204).send();
       }
-    });
-    if (!numDeleted) {
-      res.status(404).send(`Does not exist`);
-    } else {
-      res.status(204).send();
+    } catch (err) {
+      next(err);
     }
-  } catch (err) {
-    next(err);
+  } else {
+    res.status(401).send("Not logged in");
   }
+  
 });
 
 
