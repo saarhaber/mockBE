@@ -26,5 +26,5 @@ const seedDatabase = async () => {
         console.log(err)
     }
 }
-seedDatabase()
+// seedDatabase()
 module.exports = seedDatabase

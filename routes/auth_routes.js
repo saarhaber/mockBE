@@ -50,7 +50,8 @@ router.post("/login", async (req, res, next) => {
       res.status(401).send("Wrong username and/or password");
     }
     else {
-      console.log("LOGIN", req.sessionID)
+      // console.log("LOGIN", req.sessionID)
+      
       req.login(user, err => {
         (err ? next(err) : res.json(user))
       });
