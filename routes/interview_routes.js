@@ -56,7 +56,12 @@ Interview_routes.post("/", async (req, res) => {
         dateCreated: req.body.dateCreated,
         isBooked: false,
         feedback: req.body.feedback,
-        extraInfo: req.body.extraInfo
+        interviewLocation: req.body.interviewLocation,
+        extraInfo: req.body.extraInfo,
+        interviewDate: req.body.interviewDate,
+        interviewTime: req.body.interviewTime,
+        interviewerId: req.body.interviewerId,
+        studentId: req.body.studentId
     });
     res.status(201).send(new_interview);
   } catch (err) {
