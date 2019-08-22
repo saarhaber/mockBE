@@ -217,7 +217,7 @@ User_routes.put("/", async (req, res, next) => {
     loggedIn_id = user.id;
     res.send(user)
   })
-  .catch(err => console.log(err))
+  .catch(err => next(err))
 })
 
 User_routes.post('/', async (req,res,next) => {

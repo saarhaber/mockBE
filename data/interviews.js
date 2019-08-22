@@ -1,19 +1,19 @@
 const Interviews = [
   {
     dateCreated: (new Date()).toISOString(),
-    isBooked: true,
+    isBooked: false,
     feedBack: "N/A",
     extraInfo: "ONE: Wanna get mock interviewed?",
   },
   {
     dateCreated: (new Date()).toISOString(),
-    isBooked: true,
+    isBooked: false,
     feedBack: "N/A",
     extraInfo: "TWO: Wanna get mock interviewed?",
   },
   {
     dateCreated: (new Date()).toISOString(),
-    isBooked: true,
+    isBooked: false,
     feedBack: "N/A",
     extraInfo: "THREE: Wanna get mock interviewed?",
   }
