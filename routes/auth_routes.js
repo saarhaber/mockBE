@@ -41,7 +41,8 @@ router.post('/logout', (req,res) => {
     console.log(`USER ${req.user.firstName} is logging out!`);
     req.logOut();
     req.session.destroy();
-    res.redirect("/");
+    // res.redirect("/");
+    res.status(204).end();
   } else {
     res.status(401).send("Not logged in");
   }
