@@ -244,7 +244,7 @@ User_routes.post('/', async (req,res,next) => {
 });
 
 User_routes.delete('/:id', async (req,res,next) => {
-  if (req.isAuthenticated() && req.user.id === (req.params.id)) {
+  if (req.isAuthenticated() && req.user.id === Number(req.params.id)) {
     try {
       let numDeleted = await Users.destroy({
         where: {
