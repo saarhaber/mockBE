@@ -56,6 +56,12 @@ const Users = db.define("Users", {
   },
   googleId: {
     type: Sequelize.STRING
+  },
+  linkedInLink: {
+    type: Sequelize.STRING
+  },
+  githubLink: {
+    type: Sequelize.STRING
   }
 });
 
