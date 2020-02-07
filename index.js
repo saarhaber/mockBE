@@ -11,36 +11,10 @@ const seedDatabase = require('./utils/seed_data')
 
 const SequelizeStore = require('connect-session-sequelize')(session.Store)
 const sessionStore = new SequelizeStore({ db })
-// const LocalStrategy = require('passport-local').Strategy
+
 const app = express()
 const PORT = process.env.PORT || 5000
 
-// passport.use(new LocalStrategy(
-//   { usernameField: 'email'},
-//   async (email, password, done) => {
-//     try {
-//       const user = await db.models.Users.findOne({
-//         where: {
-//           email
-//         }
-//       });
-//       console.log("AAAAAAAAAAAAA")
-//       if (!user) {
-//         console.log("BBBBBBBBBB")
-//         return done(null, false, { message: "Invalid Credentials"});
-//       } else if (!await user.correctPassword(password)) {
-//         console.log("CCCCCCCCCCCC")
-//         return done(null, false, { message: "Invalid Credentials"}); 
-//       } else {
-//         // console.log("DDDDDDDDDDDDDDDD",user)
-//         return done(null, user);
-//       }
-//     } catch (err) {
-//       console.log("EEEEEEEEEEEEEE")
-//       done(err);
-//     }
-//   }
-// ));
 
 passport.serializeUser((user,done) => {
   console.log("in serialize", user.id)
