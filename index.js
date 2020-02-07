@@ -34,7 +34,7 @@ passport.deserializeUser(async (id,done) => {
 const configureApp = () => {
     app.use(bodyParser.json())
     app.use(bodyParser.urlencoded({extended: true}))
-    app.use(cors({origin:'https://mockup-frontend-capstone.herokuapp.com',credentials: true}));
+    app.use(cors({credentials: true}));
     app.use(morgan('dev'));
 
     app.use(
